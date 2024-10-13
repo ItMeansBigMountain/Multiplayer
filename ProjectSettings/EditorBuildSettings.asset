@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/index-3rd-person.unity
     guid: d87cb645a6ae8e04ea403f23f3115d2c
+  - enabled: 1
+    path: Assets/Scenes/top-down-Arena.unity
+    guid: ad8fb7b9356b76e43a490837aef737a9
+  - enabled: 1
+    path: Assets/Scenes/top-down-Shooter.unity
+    guid: c9d54ee165b6bdf47a22318f74be8774
   m_configObjects: {}
