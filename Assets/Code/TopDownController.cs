@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun; // Import Photon PUN for networking
 using StarterAssets;
 using UnityEngine.UIElements;
 
-public class TopDownController : MonoBehaviour
+public class TopDownController : MonoBehaviourPunCallbacks
 {
     // Input Variables
     private StarterAssetsInputs starterAssetsInputs;
@@ -27,39 +28,39 @@ public class TopDownController : MonoBehaviour
 
     void Update()
     {
-        // Handle Shooting
-        if (starterAssetsInputs.Shoot && Time.time >= nextShootTime)
+        // Only allow input from the local player
+        if (photonView.IsMine)
         {
-            Shoot();
-            nextShootTime = Time.time + shootCooldown; // Set next allowed shoot time
-            starterAssetsInputs.Shoot = false; // Reset shoot input for single-shot
+            // Handle Shooting
+            if (starterAssetsInputs.Shoot && Time.time >= nextShootTime)
+            {
+                photonView.RPC("Shoot", RpcTarget.All);
+                nextShootTime = Time.time + shootCooldown; // Set next allowed shoot time
+                starterAssetsInputs.Shoot = false; // Reset shoot input for single-shot
+            }
+
+            // Handle Jumping
+            HandleJumping();
         }
-
-        //Handle Jumping
-        HandleJumping();
-
-        
     }
 
+    [PunRPC]
     private void Shoot()
     {
-        //anim.SetLayerWeight(1, Mathf.Lerp(anim.GetLayerWeight(1), 1f, Time.deltaTime));
-        
-
         // Set the shooting direction to be directly in front of the player
         Vector3 shootDirection = transform.forward;
 
         // Instantiate the bullet at the shot point with the correct direction
         Instantiate(bullet_Prefab, shotPoint.position, Quaternion.LookRotation(shootDirection, Vector3.up));
 
-        // Play shooting animation if available
-        anim.SetTrigger("Shoot");
+        //// Play shooting animation if available
+        //if (anim != null)
+        //{
+        //    anim.SetTrigger("Shoot");
+        //}
 
         // Debugging information
         Debug.Log("Bullet Fired");
-
-
-        //anim.SetLayerWeight(1, Mathf.Lerp(anim.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
     }
 
     void HandleJumping()
