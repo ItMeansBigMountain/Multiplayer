@@ -32,19 +32,12 @@ public class TPP_Controller : MonoBehaviour
 
 
 
-
-
-
-
     // Assign Components
     void Awake()
     {
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
         thirdPersonController = GetComponent<ThirdPersonController>();
     }
-
-
-
 
 
 

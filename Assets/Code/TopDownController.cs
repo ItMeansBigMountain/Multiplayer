@@ -35,17 +35,16 @@ public class TopDownController : MonoBehaviour
             starterAssetsInputs.Shoot = false; // Reset shoot input for single-shot
         }
 
-        // Handle Jumping
-        if (starterAssetsInputs.jump && thirdPersonController.Grounded)
-        {
-            // Reset the jump input after handling the jump
-            starterAssetsInputs.jump = false;
-        }
+        //Handle Jumping
+        HandleJumping();
+
+        
     }
 
     private void Shoot()
     {
-        anim.SetLayerWeight(1, Mathf.Lerp(anim.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
+        //anim.SetLayerWeight(1, Mathf.Lerp(anim.GetLayerWeight(1), 1f, Time.deltaTime));
+        
 
         // Set the shooting direction to be directly in front of the player
         Vector3 shootDirection = transform.forward;
@@ -58,5 +57,18 @@ public class TopDownController : MonoBehaviour
 
         // Debugging information
         Debug.Log("Bullet Fired");
+
+
+        //anim.SetLayerWeight(1, Mathf.Lerp(anim.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
+    }
+
+    void HandleJumping()
+    {
+        // Handle Jumping
+        if (starterAssetsInputs.jump && thirdPersonController.Grounded)
+        {
+            // Reset the jump input after handling the jump
+            starterAssetsInputs.jump = false;
+        }
     }
 }
