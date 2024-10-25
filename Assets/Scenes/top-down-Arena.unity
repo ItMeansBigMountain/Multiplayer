@@ -323,13 +323,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 197063554, guid: 6ea84698cee18b2458cba652e2f643a6, type: 3}
+      propertyPath: GroundLayers.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6947391476681370268, guid: 6ea84698cee18b2458cba652e2f643a6, type: 3}
       propertyPath: m_Name
       value: animeGirl_underwear
       objectReference: {fileID: 0}
     - target: {fileID: 6947391476681370268, guid: 6ea84698cee18b2458cba652e2f643a6, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6952825212452859308, guid: 6ea84698cee18b2458cba652e2f643a6, type: 3}
       propertyPath: m_RootOrder
@@ -556,7 +560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7902355572753829173, guid: 82b2ed0f35834f446b08bf96904a5475, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7902355572753829182, guid: 82b2ed0f35834f446b08bf96904a5475, type: 3}
       propertyPath: GroundLayers.m_Bits
@@ -795,7 +799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3389978023614862032, guid: a5a4916d9090c604196c4a17a86e019f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -953,7 +957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2342661302610398484, guid: c31e2e01a4bdb2d4ab815bf7e3af3efa, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3155086714034575278, guid: c31e2e01a4bdb2d4ab815bf7e3af3efa, type: 3}
       propertyPath: m_RootOrder
@@ -1018,7 +1022,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 289218571507192589, guid: 3d43716cda23d0e45abbf2ede4c79ce7, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1101220744304626103, guid: 3d43716cda23d0e45abbf2ede4c79ce7, type: 3}
       propertyPath: m_RootOrder
