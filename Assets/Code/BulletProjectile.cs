@@ -19,7 +19,7 @@ public class BulletProjectile : MonoBehaviour
 
     private void Start()
     {
-        bulletRigidBody.velocity = transform.forward * speed;
+        bulletRigidBody.linearVelocity = transform.forward * speed;
     }
 
 
