@@ -584,8 +584,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9143714742281431717}
+  - component: {fileID: -7617645225973465625}
   m_Layer: 0
-  m_Name: AnimeHoodie-Arena
+  m_Name: Multiplayer-Character-AnimeHoodie-Arena
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -613,6 +614,28 @@ Transform:
   - {fileID: 5446272268203000914}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-7617645225973465625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672204584268254449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1874246403988156616
 GameObject:
   m_ObjectHideFlags: 0
@@ -2290,6 +2313,7 @@ MonoBehaviour:
   lazerPointer: {fileID: 0}
   bullet_Prefab: {fileID: 0}
   shotPoint: {fileID: 0}
+  lineRenderer: {fileID: 0}
 --- !u!1 &5083128693075375684
 GameObject:
   m_ObjectHideFlags: 0
@@ -2955,7 +2979,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 830555476199895842}
   m_Lens:
-    FieldOfView: 40
+    FieldOfView: 45
     OrthographicSize: 10
     NearClipPlane: 0.2
     FarClipPlane: 500
@@ -3910,7 +3934,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: {x: 0.1, y: 0.25, z: 0.3}
-  ShoulderOffset: {x: 0, y: 5, z: -20}
+  ShoulderOffset: {x: 1, y: 6, z: -25}
   VerticalArmLength: 0
   CameraSide: 1
   CameraDistance: 4

@@ -19,7 +19,7 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
     [SerializeField] private LayerMask mouseColliderLayerMask;
 
     [Tooltip("Reference to an Input Action for Look/aiming - For Cross-Platform Input (manual configuration).")]
-    [SerializeField] private InputActionReference lookInput; 
+    [SerializeField] private InputActionReference lookInput;
 
     // Auto-Configured Components
     [Header("Auto-Configured Components")]
@@ -28,10 +28,9 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
     [SerializeField] private GameObject lazerPointer;
     [SerializeField] private GameObject bullet_Prefab;
     [SerializeField] private Transform shotPoint;
-
-    // Input Variables
-    private StarterAssetsInputs starterAssetsInputs;
-    private ThirdPersonController thirdPersonController;
+    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private StarterAssetsInputs starterAssetsInputs;
+    [SerializeField] private ThirdPersonController thirdPersonController;
 
 
 
@@ -52,13 +51,24 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
         lazerPointer = transform.parent.Find("lazer dot")?.gameObject;
 
         // Locate the bullet prefab from Resources or adjust path if needed
-        bullet_Prefab = Resources.Load<GameObject>("laser_bullet"); // Adjust path as needed
+        bullet_Prefab = Resources.Load<GameObject>("laser_bullet"); 
 
         // Find 'shotPoint' as a child within 'mech_skeleton'
         shotPoint = transform.Find("shotPoint");
 
         // Enable the input action for cross-platform input
         lookInput.action.Enable();
+
+        // Initialize LineRenderer
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer.startWidth = 0.05f;  // Adjust thickness as desired
+        lineRenderer.endWidth = 0.05f;
+        lineRenderer.material = new Material(Shader.Find("Unlit/Color")); // Set a basic material
+        lineRenderer.material.color = Color.red;  // Set laser color
+
+        // Optional: Additional beam settings (e.g., glow)
+        lineRenderer.startColor = Color.red;
+        lineRenderer.endColor = Color.red;
 
         // Debugging checks to ensure components are found
         if (aimVirtualCamera == null) Debug.LogWarning("PlayerAimCamera not found.");
@@ -80,16 +90,22 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
         RaycastHit raycastHitted_object;
 
         //  Create Ray HitPoint Output
-        if (Physics.Raycast(ray, out raycastHitted_object, 999f, mouseColliderLayerMask))
+        if (Physics.Raycast(ray, out raycastHitted_object, 999f, mouseColliderLayerMask) && starterAssetsInputs.Aim)
         {
             lazerPointer.SetActive(true);
             lazerPointer.transform.position = raycastHitted_object.point;
             mouseWorldPosition = raycastHitted_object.point;
             hit_transform = raycastHitted_object.transform;
+
+            // Enable the laser beam and set the positions
+            lineRenderer.enabled = true;
+            lineRenderer.SetPosition(0, shotPoint.position);
+            lineRenderer.SetPosition(1, lazerPointer.transform.position); 
         }
         else
         {
             lazerPointer.SetActive(false);
+            lineRenderer.enabled = false;
         }
 
         // Process aiming input with cross-platform support

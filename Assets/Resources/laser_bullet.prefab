@@ -54,6 +54,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -118,9 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e0ab4977af38a49a170621b0453fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 70
-  vfx_Hit_green: {fileID: 7226583673155636402, guid: a2ab56839e1c9504ea9d141e95d0b16b, type: 3}
-  vfx_Hit_red: {fileID: 8443315704496310909, guid: 6ef35fa36e3a65043b2d800600204bdd, type: 3}
+  speed: 100
+  vfx_Hit_red: {fileID: 2955623459812423940, guid: f5507a8c6a22c404ab324980c4e8a11b, type: 3}
+  bulletRigidBody: {fileID: 0}
 --- !u!54 &5624143908283501922
 Rigidbody:
   m_ObjectHideFlags: 0

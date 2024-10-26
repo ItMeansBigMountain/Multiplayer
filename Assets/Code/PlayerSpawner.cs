@@ -1,23 +1,53 @@
 using UnityEngine;
 using Photon.Pun;
+using System.Linq;
 
 public class PlayerSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject playerPrefab; 
-    [SerializeField] private GameObject mapPlane; 
+    [SerializeField] private GameObject[] characterPrefabs;
+    [SerializeField] private GameObject mapPlane;
 
     private void Start()
     {
         if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
         {
+            LoadCharacterPrefabs();
             SpawnPlayer();
+        }
+        else
+        {
+            Debug.LogWarning("Not connected to a Photon room. Player spawn canceled.");
+        }
+    }
+
+    private void LoadCharacterPrefabs()
+    {
+        // Load all GameObjects from Resources folder and filter by prefix
+        GameObject[] loadedPrefabs = Resources.LoadAll<GameObject>("")
+            .Where(prefab => prefab.name.StartsWith("Multiplayer-Character-"))
+            .ToArray();
+
+        if (loadedPrefabs.Length > 0)
+        {
+            characterPrefabs = loadedPrefabs;
+            Debug.Log($"{characterPrefabs.Length} character prefabs loaded.");
+        }
+        else
+        {
+            Debug.LogError("No character prefabs with the prefix 'Multiplayer-Character-' found in Resources.");
         }
     }
 
     private void SpawnPlayer()
     {
-        // Get the bounds of the map plane
+        // Check if mapPlane has a Renderer component
         Renderer mapRenderer = mapPlane.GetComponent<Renderer>();
+        if (mapRenderer == null)
+        {
+            Debug.LogError("Map plane does not have a Renderer component.");
+            return;
+        }
+
         Vector3 mapSize = mapRenderer.bounds.size;
 
         // Calculate a random spawn position near the perimeter of the plane
@@ -26,7 +56,22 @@ public class PlayerSpawner : MonoBehaviour
 
         Vector3 spawnPosition = new Vector3(xPos, mapPlane.transform.position.y + 1f, zPos);
 
-        // Instantiate the player at the calculated position
-        PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition, Quaternion.identity);
+        // Calculate direction to the center of the map
+        Vector3 mapCenter = mapPlane.transform.position;
+        Vector3 directionToCenter = (mapCenter - spawnPosition).normalized;
+        Quaternion rotationToCenter = Quaternion.LookRotation(directionToCenter, Vector3.up);
+
+        // Choose a random character prefab from the array
+        if (characterPrefabs.Length > 0)
+        {
+            GameObject selectedPrefab = characterPrefabs[Random.Range(0, characterPrefabs.Length)];
+
+            // Instantiate the selected prefab at the calculated position with the calculated rotation
+            PhotonNetwork.Instantiate(selectedPrefab.name, spawnPosition, rotationToCenter);
+        }
+        else
+        {
+            Debug.LogError("No character prefabs available for spawning.");
+        }
     }
 }
