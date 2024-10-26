@@ -25,11 +25,8 @@ namespace StarterAssets
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
 
-
         [Tooltip("Camera Rotation Sensitivity")]
         public float CameraRotationSensitivity = 15f;
-
-
 
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
@@ -148,6 +145,9 @@ namespace StarterAssets
 
         private void Start()
         {
+            MoveSpeed = 5.0f;
+            SprintSpeed = 7.0f;
+
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
 
             _hasAnimator = TryGetComponent(out _animator);
@@ -169,10 +169,19 @@ namespace StarterAssets
         private void Update()
         {
             _hasAnimator = TryGetComponent(out _animator);
+            float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
+            // float deltaTimeMultiplier = Time.deltaTime;
 
             JumpAndGravity();
             GroundedCheck();
-            Move();
+            if (!_input.Aim)
+            {
+                // Reset pitch to zero (horizontal level) when not aiming
+                _cinemachineTargetPitch = Mathf.Lerp(_cinemachineTargetPitch, 0, deltaTimeMultiplier * 5f);
+
+                //Cannot move when aiming
+                Move();
+            }
         }
 
         private void LateUpdate()
@@ -206,14 +215,24 @@ namespace StarterAssets
 
         private void CameraRotation()
         {
+
             // if there is an input and camera position is not fixed
             if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
             {
-                //Don't multiply mouse input by Time.deltaTime;
-                float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
+                // float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
+                float deltaTimeMultiplier = Time.deltaTime;
+                float pitchVelocity = 0.0f;
 
-                _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * CameraRotationSensitivity;
-                _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * CameraRotationSensitivity;
+                Vector2 lookInput = _input.look;
+                if (_input.Aim)
+                {
+                    _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * CameraRotationSensitivity;
+                    _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier * CameraRotationSensitivity;
+                }
+                else
+                {
+                    _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier * CameraRotationSensitivity;
+                }
             }
 
             // clamp our rotations so our values are limited 360 degrees
@@ -223,6 +242,7 @@ namespace StarterAssets
             // Cinemachine will follow this target
             CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
                 _cinemachineTargetYaw, 0.0f);
+
         }
 
         private void Move()
@@ -405,7 +425,6 @@ namespace StarterAssets
             }
         }
 
-
         public void setSensitivity(float NewSensitivity)
         {
             CameraRotationSensitivity = NewSensitivity;
@@ -416,7 +435,4 @@ namespace StarterAssets
             _rotateOnMove = newRotateBoolean;
         }
     }
-
-
-
 }

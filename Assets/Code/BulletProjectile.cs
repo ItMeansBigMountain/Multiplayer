@@ -33,7 +33,6 @@ public class BulletProjectile : MonoBehaviour
             Instantiate(vfx_Hit_red, transform.position, Quaternion.identity);
 
         Destroy(gameObject);
-        print(other.gameObject.tag);
     }
 
 
