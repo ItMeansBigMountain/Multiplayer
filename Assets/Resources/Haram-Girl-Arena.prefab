@@ -1678,7 +1678,7 @@ GameObject:
   - component: {fileID: 2444045637882201135}
   - component: {fileID: -3165494315197308507}
   m_Layer: 0
-  m_Name: Haram-Arena
+  m_Name: Haram-Girl-Arena
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2931,6 +2931,7 @@ GameObject:
   - component: {fileID: 2199411449896924162}
   - component: {fileID: 5526493266325981391}
   - component: {fileID: 7588239124795954696}
+  - component: {fileID: 520217871078926343}
   m_Layer: 8
   m_Name: GIRL
   m_TagString: Player
@@ -3042,7 +3043,7 @@ MonoBehaviour:
   GroundedRadius: 0.28
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 513
+    m_Bits: 1
   CinemachineCameraTarget: {fileID: 2437759721701686952}
   TopClamp: 70
   BottomClamp: -30
@@ -3207,6 +3208,26 @@ MonoBehaviour:
   lazerPointer: {fileID: 0}
   bullet_Prefab: {fileID: 0}
   shotPoint: {fileID: 0}
+  lineRenderer: {fileID: 0}
+  starterAssetsInputs: {fileID: 0}
+  thirdPersonController: {fileID: 0}
+  raycastMaxRange: 999
+--- !u!114 &520217871078926343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8594844568462554932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters: []
+  m_SynchronizeLayers: []
 --- !u!1 &8745271625032863534
 GameObject:
   m_ObjectHideFlags: 0

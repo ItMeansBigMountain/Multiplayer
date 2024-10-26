@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 580754225947284726}
   - component: {fileID: 6156652409110765459}
   - component: {fileID: 6405229470184283914}
+  - component: {fileID: 6889903615387860642}
   m_Layer: 8
   m_Name: MAN
   m_TagString: Player
@@ -425,6 +426,47 @@ MonoBehaviour:
   lazerPointer: {fileID: 0}
   bullet_Prefab: {fileID: 0}
   shotPoint: {fileID: 0}
+  lineRenderer: {fileID: 0}
+  starterAssetsInputs: {fileID: 0}
+  thirdPersonController: {fileID: 0}
+  raycastMaxRange: 999
+--- !u!114 &6889903615387860642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464028745970292214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 1
+    SynchronizeType: 2
+    Name: Speed
+  - Type: 4
+    SynchronizeType: 1
+    Name: Jump
+  - Type: 4
+    SynchronizeType: 1
+    Name: Grounded
+  - Type: 4
+    SynchronizeType: 1
+    Name: FreeFall
+  - Type: 1
+    SynchronizeType: 2
+    Name: MotionSpeed
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
+  - SynchronizeType: 0
+    LayerIndex: 1
+  - SynchronizeType: 0
+    LayerIndex: 2
 --- !u!1 &1615777507831854647
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,7 +478,7 @@ GameObject:
   - component: {fileID: 1565170952946697116}
   - component: {fileID: 1011127747626714455}
   m_Layer: 0
-  m_Name: BodyGuard-3-Arena
+  m_Name: Multiplayer-Character-BodyGuard-3-Arena
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -482,7 +524,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 6889903615387860642}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

@@ -65,7 +65,7 @@ public class PlayerSpawner : MonoBehaviour
         // CHOOSE CHARACTER 
         if (characterPrefabs.Length > 0)
         {
-            // ORIGINAL
+            // RANDOM CHARACTER
             GameObject selectedPrefab = characterPrefabs[Random.Range(0, characterPrefabs.Length)];
 
             // Instantiate the selected prefab at the calculated position with the calculated rotation
