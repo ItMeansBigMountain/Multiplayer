@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Collections;
+using Photon.Pun;
 using System.Collections.Generic;
 
 public class MapGenerator : MonoBehaviour
@@ -27,7 +27,16 @@ public class MapGenerator : MonoBehaviour
 
     private void Start()
     {
-        // Get the size of the plane.
+        // Only the Master Client generates the map
+        if (PhotonNetwork.IsMasterClient)
+        {
+            GenerateMap();
+        }
+    }
+
+    private void GenerateMap()
+    {
+        // Get the size of the plane
         MeshRenderer planeMeshRenderer = plane.GetComponent<MeshRenderer>();
         if (planeMeshRenderer == null)
         {
@@ -37,11 +46,11 @@ public class MapGenerator : MonoBehaviour
 
         Vector3 planeSize = planeMeshRenderer.bounds.size;
 
-        // Get the bounds of the plane.
+        // Calculate the bounds of the plane
         float halfPlaneWidth = planeSize.x / 2f;
         float halfPlaneLength = planeSize.z / 2f;
 
-        // Spawn the obstacles.
+        // Spawn obstacles
         for (int i = 0; i < numObstacles; i++)
         {
             GameObject obstaclePrefab = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Count)];
@@ -55,25 +64,17 @@ public class MapGenerator : MonoBehaviour
             obstacle.transform.SetParent(plane.transform);
         }
 
-        // Spawn the invisible walls and ceiling.
+        // Spawn the invisible walls and ceiling
         CreateInvisibleWallsAndCeiling(halfPlaneWidth, halfPlaneLength);
     }
 
     private void CreateInvisibleWallsAndCeiling(float halfWidth, float halfLength)
     {
-        // Left Wall
+        // Create walls and ceiling here
         CreateInvisibleWall(new Vector3(-halfWidth, wallHeight / 2f, 0), new Vector3(0.1f, wallHeight, halfLength * 2));
-
-        // Right Wall
         CreateInvisibleWall(new Vector3(halfWidth, wallHeight / 2f, 0), new Vector3(0.1f, wallHeight, halfLength * 2));
-
-        // Front Wall
         CreateInvisibleWall(new Vector3(0, wallHeight / 2f, halfLength), new Vector3(halfWidth * 2, wallHeight, 0.1f));
-
-        // Back Wall
         CreateInvisibleWall(new Vector3(0, wallHeight / 2f, -halfLength), new Vector3(halfWidth * 2, wallHeight, 0.1f));
-
-        // Ceiling
         CreateInvisibleWall(new Vector3(0, ceilingHeight, 0), new Vector3(halfWidth * 2, 0.1f, halfLength * 2));
     }
 
@@ -86,8 +87,6 @@ public class MapGenerator : MonoBehaviour
 
         // Add a BoxCollider to the wall to act as a barrier
         BoxCollider wallCollider = wall.AddComponent<BoxCollider>();
-
-        // Make it invisible by not adding a MeshRenderer
         wallCollider.isTrigger = false;
     }
 }

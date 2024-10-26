@@ -1,35 +1,39 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 
 public class BasicRigidBodyPush : MonoBehaviour
 {
-	public LayerMask pushLayers;
-	public bool canPush;
-	[Range(0.5f, 5f)] public float strength = 1.1f;
+    public LayerMask pushLayers;
+    public bool canPush;
+    [Range(0.5f, 5f)] public float strength = 1.1f;
 
-	private void OnControllerColliderHit(ControllerColliderHit hit)
-	{
-		if (canPush) PushRigidBodies(hit);
-	}
+    private PhotonView photonView;
 
-	private void PushRigidBodies(ControllerColliderHit hit)
-	{
-		// https://docs.unity3d.com/ScriptReference/CharacterController.OnControllerColliderHit.html
+    private void Awake()
+    {
+        photonView = GetComponent<PhotonView>();
+    }
 
-		// make sure we hit a non kinematic rigidbody
-		Rigidbody body = hit.collider.attachedRigidbody;
-		if (body == null || body.isKinematic) return;
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        // Only apply push logic if this is the local player
+        if (canPush && photonView != null && photonView.IsMine)
+        {
+            PushRigidBodies(hit);
+        }
+    }
 
-		// make sure we only push desired layer(s)
-		var bodyLayerMask = 1 << body.gameObject.layer;
-		if ((bodyLayerMask & pushLayers.value) == 0) return;
+    private void PushRigidBodies(ControllerColliderHit hit)
+    {
+        Rigidbody body = hit.collider.attachedRigidbody;
+        if (body == null || body.isKinematic) return;
 
-		// We dont want to push objects below us
-		if (hit.moveDirection.y < -0.3f) return;
+        var bodyLayerMask = 1 << body.gameObject.layer;
+        if ((bodyLayerMask & pushLayers.value) == 0) return;
 
-		// Calculate push direction from move direction, horizontal motion only
-		Vector3 pushDir = new Vector3(hit.moveDirection.x, 0.0f, hit.moveDirection.z);
+        if (hit.moveDirection.y < -0.3f) return;
 
-		// Apply the push and take strength into account
-		body.AddForce(pushDir * strength, ForceMode.Impulse);
-	}
+        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0.0f, hit.moveDirection.z);
+        body.AddForce(pushDir * strength, ForceMode.Impulse);
+    }
 }

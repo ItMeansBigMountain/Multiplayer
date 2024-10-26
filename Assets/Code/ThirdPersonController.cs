@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -116,6 +117,8 @@ namespace StarterAssets
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
         private bool _rotateOnMove = true;
+        private PhotonView photonView;
+
 
         private const float _threshold = 0.01f;
 
@@ -145,6 +148,8 @@ namespace StarterAssets
 
         private void Start()
         {
+            photonView = GetComponent<PhotonView>();
+
             MoveSpeed = 5.0f;
             SprintSpeed = 7.0f;
 
@@ -168,6 +173,12 @@ namespace StarterAssets
 
         private void Update()
         {
+            if (photonView != null && !photonView.IsMine)
+            {
+                return; // Skip update for non-local players
+            }
+
+
             _hasAnimator = TryGetComponent(out _animator);
             float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
             // float deltaTimeMultiplier = Time.deltaTime;
@@ -186,6 +197,11 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
+            if (photonView != null && !photonView.IsMine)
+            {
+                return; // Skip camera rotation for non-local players
+            }
+
             CameraRotation();
         }
 

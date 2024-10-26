@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8886558526170545016}
   - component: {fileID: 4935978878707667737}
   - component: {fileID: -3869554151863621751}
+  - component: {fileID: -9196426995869965862}
   m_Layer: 0
   m_Name: laser_bullet
   m_TagString: Untagged
@@ -123,9 +124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e0ab4977af38a49a170621b0453fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 150
+  speed: 200
   vfx_Hit_red: {fileID: 2955623459812423940, guid: f5507a8c6a22c404ab324980c4e8a11b, type: 3}
-  bulletRigidBody: {fileID: 0}
 --- !u!54 &5624143908283501922
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -152,7 +152,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!135 &8886558526170545016
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -210,6 +210,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
+  m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
+--- !u!114 &-9196426995869965862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122648}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e328a0708a5bdce4dbe3d36937219164, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 200
+  lifetime: 3
+  hitEffectPrefab: {fileID: 2955623459812423943, guid: f5507a8c6a22c404ab324980c4e8a11b, type: 3}
