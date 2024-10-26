@@ -4,6 +4,8 @@ using UnityEngine;
 using Cinemachine;
 using StarterAssets;
 using UnityEngine.InputSystem;
+using Photon.Pun;
+
 
 public class ArenaShooter_PlayerControls : MonoBehaviour
 {
@@ -21,16 +23,20 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
     [Tooltip("Reference to an Input Action for Look/aiming - For Cross-Platform Input (manual configuration).")]
     [SerializeField] private InputActionReference lookInput;
 
+    [Tooltip("Public because the guns may change into the future (manual configuration).")]
+    [SerializeField] public GameObject bullet_Prefab;
+
     // Auto-Configured Components
     [Header("Auto-Configured Components")]
     [SerializeField] private CinemachineVirtualCamera aimVirtualCamera;
     [SerializeField] private Animator anim;
     [SerializeField] private GameObject lazerPointer;
-    [SerializeField] private GameObject bullet_Prefab;
     [SerializeField] private Transform shotPoint;
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private StarterAssetsInputs starterAssetsInputs;
     [SerializeField] private ThirdPersonController thirdPersonController;
+    [SerializeField] private float raycastMaxRange = 999f;
+    private PhotonView photonView;
 
 
 
@@ -49,9 +55,6 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
 
         // Find 'lazer dot' by navigating through children
         lazerPointer = transform.parent.Find("lazer dot")?.gameObject;
-
-        // Locate the bullet prefab from Resources or adjust path if needed
-        bullet_Prefab = Resources.Load<GameObject>("laser_bullet"); 
 
         // Find 'shotPoint' as a child within 'mech_skeleton'
         shotPoint = transform.Find("shotPoint");
@@ -80,6 +83,19 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
 
     void Update()
     {
+
+        // MULTIPLAYER CHECK 
+        photonView = GetComponentInParent<PhotonView>();
+
+        if (photonView == null || !photonView.IsMine)
+        {
+            // Disable scripts and components for non-local players
+            this.enabled = false;
+            aimVirtualCamera.gameObject.SetActive(false);
+            return;
+        }
+
+
         Vector3 mouseWorldPosition = Vector3.zero;
 
         // RAYCAST INIT - laser pointer hit detection
@@ -89,8 +105,8 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
         Transform hit_transform = null;
         RaycastHit raycastHitted_object;
 
-        //  Create Ray HitPoint Output
-        if (Physics.Raycast(ray, out raycastHitted_object, 999f, mouseColliderLayerMask) && starterAssetsInputs.Aim)
+        //  LAZER & SHOOTING LOGIC 
+        if (Physics.Raycast(ray, out raycastHitted_object, raycastMaxRange, mouseColliderLayerMask) && starterAssetsInputs.Aim)
         {
             lazerPointer.SetActive(true);
             lazerPointer.transform.position = raycastHitted_object.point;
@@ -100,7 +116,7 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
             // Enable the laser beam and set the positions
             lineRenderer.enabled = true;
             lineRenderer.SetPosition(0, shotPoint.position);
-            lineRenderer.SetPosition(1, lazerPointer.transform.position); 
+            lineRenderer.SetPosition(1, lazerPointer.transform.position);
         }
         else
         {
@@ -112,17 +128,13 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
         ProcessAiming(mouseWorldPosition);
 
         // Is Shooting
+        // if (starterAssetsInputs.Shoot && photonView.IsMine)
         if (starterAssetsInputs.Shoot)
         {
-            // Determine shooting direction (either towards aim or straight ahead)
-            Vector3 aimDir = starterAssetsInputs.Aim ?
-                             (mouseWorldPosition - shotPoint.position).normalized :
-                             transform.forward;
+            Vector3 aimDir = starterAssetsInputs.Aim ? (mouseWorldPosition - shotPoint.position).normalized : transform.forward;
 
-            // Instantiate bullet in the chosen direction
-            Instantiate(bullet_Prefab, shotPoint.position, Quaternion.LookRotation(aimDir, Vector3.up));
-
-            // SINGLE SHOT
+            // Networked instantiation for projectiles
+            PhotonNetwork.Instantiate(bullet_Prefab.name, shotPoint.position, Quaternion.LookRotation(aimDir));
             starterAssetsInputs.Shoot = false;
         }
     }
@@ -169,6 +181,7 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
 
     private void OnDisable()
     {
-        lookInput.action.Disable(); // Disable the input action when the script is disabled
+        // Disable the input action when the script is disabled
+        lookInput.action.Disable();
     }
 }
