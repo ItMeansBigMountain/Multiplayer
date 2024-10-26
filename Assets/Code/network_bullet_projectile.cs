@@ -1,25 +1,39 @@
 using UnityEngine;
 using Photon.Pun;
 
+[RequireComponent(typeof(Rigidbody), typeof(PhotonRigidbodyView))]
 public class network_bullet_projectile : MonoBehaviourPunCallbacks
 {
     [SerializeField] private float speed = 20f;         
     [SerializeField] private float lifetime = 3f;       
     [SerializeField] private GameObject hitEffectPrefab;
 
-    private void Start()
+    private Rigidbody rb;
+
+    private void Awake()
     {
-        // Only the owner manages the bullet's lifetime
-        if (photonView.IsMine)
+        // Get the Rigidbody component
+        rb = GetComponent<Rigidbody>();
+
+        // Ensure the Rigidbody is kinematic for non-owners to avoid physics conflicts
+        if (!photonView.IsMine)
         {
-            Invoke("DestroyBullet", lifetime);
+            rb.isKinematic = true;
         }
     }
 
-    private void Update()
+    private void Start()
     {
-        // Move the bullet forward
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        // Set the initial velocity in the forward direction
+        if (photonView.IsMine)
+        {
+            // USING TRANSFORM
+            // transform.Translate(Vector3.forward * speed * Time.deltaTime);
+
+            // USING GRAVITY
+            rb.linearVelocity = transform.forward * speed;
+            Invoke("DestroyBullet", lifetime);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

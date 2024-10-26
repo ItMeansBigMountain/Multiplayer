@@ -6,6 +6,7 @@ public class PlayerSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] characterPrefabs;
     [SerializeField] private GameObject mapPlane;
+    [SerializeField] private int deleteme = 1;
 
     private void Start()
     {
@@ -61,9 +62,10 @@ public class PlayerSpawner : MonoBehaviour
         Vector3 directionToCenter = (mapCenter - spawnPosition).normalized;
         Quaternion rotationToCenter = Quaternion.LookRotation(directionToCenter, Vector3.up);
 
-        // Choose a random character prefab from the array
+        // CHOOSE CHARACTER 
         if (characterPrefabs.Length > 0)
         {
+            // ORIGINAL
             GameObject selectedPrefab = characterPrefabs[Random.Range(0, characterPrefabs.Length)];
 
             // Instantiate the selected prefab at the calculated position with the calculated rotation
