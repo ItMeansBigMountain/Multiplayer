@@ -128,8 +128,7 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
         ProcessAiming(mouseWorldPosition);
 
         // Is Shooting
-        // if (starterAssetsInputs.Shoot && photonView.IsMine)
-        if (starterAssetsInputs.Shoot)
+        if (starterAssetsInputs.Shoot && photonView.IsMine)
         {
             Vector3 aimDir = starterAssetsInputs.Aim ? (mouseWorldPosition - shotPoint.position).normalized : transform.forward;
 
