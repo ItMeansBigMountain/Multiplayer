@@ -10,11 +10,7 @@ public class AK47 : MonoBehaviour
 
     void Start()
     {
-        // Ensure StarterAssetsInputs is correctly referenced if not set in the Inspector
-        // starterAssetsInputs = GetComponentInParent<StarterAssetsInputs>();
-
-        // Hide the gun initially
-        gameObject.SetActive(false);
+        
     }
 
     void Update()
