@@ -8,10 +8,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/loginScene.unity
     guid: 678be963839b0ac49b8fb676db9c9f28
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/top-down-Multiplayer.unity
     guid: c9d54ee165b6bdf47a22318f74be8774
   - enabled: 0
     path: Assets/Scenes/top-down-Arena.unity
     guid: ad8fb7b9356b76e43a490837aef737a9
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
