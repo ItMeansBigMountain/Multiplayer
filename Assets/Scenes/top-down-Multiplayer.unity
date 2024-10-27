@@ -438,6 +438,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterPrefabs: []
   mapPlane: {fileID: 171782946}
+  deleteme: 1
 --- !u!4 &719328448
 Transform:
   m_ObjectHideFlags: 0

@@ -1,5 +1,5 @@
 using UnityEngine;
-using Cinemachine;
+using Unity.Cinemachine;
 using StarterAssets;
 using UnityEngine.InputSystem;
 using Photon.Pun;
@@ -13,7 +13,7 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
     [SerializeField] private InputActionReference lookInput;
 
     [Header("Auto-Configured Components")]
-    [SerializeField] private CinemachineVirtualCamera aimVirtualCamera;
+    [SerializeField] private CinemachineCamera aimVirtualCamera;
     [SerializeField] private Animator anim;
     [SerializeField] private GameObject lazerPointer;
     [SerializeField] private GameObject bullet_Prefab;
@@ -42,7 +42,7 @@ public class ArenaShooter_PlayerControls : MonoBehaviour
         thirdPersonController = GetComponent<ThirdPersonController>();
 
         // Initialize components and settings
-        aimVirtualCamera = transform.parent.Find("PlayerAimCamera")?.GetComponent<CinemachineVirtualCamera>();
+        aimVirtualCamera = transform.parent.Find("PlayerAimCamera")?.GetComponent<CinemachineCamera>();
         anim = GetComponent<Animator>();
         lazerPointer = transform.parent.Find("lazer dot")?.gameObject;
         bullet_Prefab = Resources.Load<GameObject>("laser_bullet");

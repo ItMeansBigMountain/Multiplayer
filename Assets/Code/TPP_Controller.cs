@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Cinemachine;
+using Unity.Cinemachine;
 using StarterAssets;
 using UnityEngine.InputSystem;
 
@@ -11,7 +11,7 @@ public class TPP_Controller : MonoBehaviour
 
 
     //Camera
-    [SerializeField] private CinemachineVirtualCamera aimVirtualCamera;
+    [SerializeField] private CinemachineCamera aimVirtualCamera;
 
     // Input Variables
     private StarterAssetsInputs starterAssetsInputs;
