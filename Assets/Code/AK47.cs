@@ -10,7 +10,7 @@ public class AK47 : MonoBehaviour
 
     void Start()
     {
-        
+        gameObject.SetActive(true);
     }
 
     void Update()
@@ -23,7 +23,6 @@ public class AK47 : MonoBehaviour
             PositionGunForAiming();
         }
 
-        Debug.Log(starterAssetsInputs.Aim);
     }
 
     private void PositionGunForAiming()

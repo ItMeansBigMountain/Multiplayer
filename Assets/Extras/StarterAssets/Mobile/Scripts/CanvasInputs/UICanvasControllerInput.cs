@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 namespace StarterAssets
 {
@@ -20,10 +21,10 @@ namespace StarterAssets
 
         [Header("Mobile Controls")]
         public GameObject joystick;
-        public GameObject fireButton;
-        public GameObject aimButton;
-        public GameObject jumpButton;
-        public GameObject sprintButton;
+        public UIVirtualButton fireButton;   // Updated to UIVirtualButton
+        public UIVirtualButton aimButton;    // Updated to UIVirtualButton
+        public UIVirtualButton jumpButton;   // Updated to UIVirtualButton
+        public UIVirtualButton sprintButton; // Updated to UIVirtualButton
 
         private void Start()
         {
@@ -38,19 +39,43 @@ namespace StarterAssets
                 Debug.LogError("ARMATURE object not found or StarterAssetsInputs component missing");
             }
 
-
             // Find the crosshair in the hierarchy
             crossHair = transform.Find("CrossHair")?.gameObject;
 
             // Assign Joystick and Buttons within MobileControls
             joystick = transform.Find("Joystick_Move")?.gameObject;
-            fireButton = transform.Find("FireButton")?.gameObject;
-            aimButton = transform.Find("AimButton")?.gameObject;
-            jumpButton = transform.Find("JumpButton")?.gameObject;
-            sprintButton = transform.Find("SprintButton")?.gameObject;
+            fireButton = transform.Find("FireButton")?.GetComponent<UIVirtualButton>();
+            aimButton = transform.Find("AimButton")?.GetComponent<UIVirtualButton>();
+            jumpButton = transform.Find("JumpButton")?.GetComponent<UIVirtualButton>();
+            sprintButton = transform.Find("SprintButton")?.GetComponent<UIVirtualButton>();
+
+            // Add event listeners for UIVirtualButton buttons
+            if (fireButton != null)
+            {
+                fireButton.buttonStateOutputEvent.AddListener(VirtualShootInput);
+            }
+
+            if (aimButton != null)
+            {
+                aimButton.buttonStateOutputEvent.AddListener(VirtualAimInput);
+            }
+
+            if (jumpButton != null)
+            {
+                jumpButton.buttonStateOutputEvent.AddListener(VirtualJumpInput);
+            }
+
+            if (sprintButton != null)
+            {
+                sprintButton.buttonStateOutputEvent.AddListener(VirtualSprintInput);
+            }
 
             ConfigureDeviceSpecificUI();
         }
+
+
+
+
 
         private void Update()
         {
@@ -61,24 +86,29 @@ namespace StarterAssets
             }
         }
 
+
+
         private void ConfigureDeviceSpecificUI()
         {
 #if UNITY_IOS || UNITY_ANDROID
-            fireButton.SetActive(true);
-            virtualJoystick.SetActive(true);
-            jumpButton.SetActive(true);
-            aimButton.SetActive(true);
-            jumpButton.SetActive(true);
-            sprintButton.SetActive(true);
+            fireButton.gameObject.SetActive(true);
+            joystick.gameObject.SetActive(true);
+            jumpButton.gameObject.SetActive(true);
+            aimButton.gameObject.SetActive(true);
+            jumpButton.gameObject.SetActive(true);
+            sprintButton.gameObject.SetActive(true);
 #else
-            fireButton.SetActive(false);
-            joystick.SetActive(false);
-            jumpButton.SetActive(false);
-            aimButton.SetActive(false);
-            jumpButton.SetActive(false);
-            sprintButton.SetActive(false);
+            fireButton.gameObject.SetActive(false);
+            joystick.gameObject.SetActive(false);
+            jumpButton.gameObject.SetActive(false);
+            aimButton.gameObject.SetActive(false);
+            jumpButton.gameObject.SetActive(false);
+            sprintButton.gameObject.SetActive(false);
 #endif
         }
+
+
+
 
         public void VirtualMoveInput(Vector2 virtualMoveDirection)
         {
@@ -109,6 +139,11 @@ namespace StarterAssets
         {
             starterAssetsInputs.ShootInput(virtualShootState);
         }
+
+
+
+
+
         // Kill Feed Functionality
         public void AddKillFeedEntry(string killer, string victim)
         {
