@@ -15,7 +15,7 @@ namespace StarterAssets
 
 
 
-    public class ThirdPersonController : MonoBehaviour
+    public class ThirdPersonController : MonoBehaviourPunCallbacks
     {
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
@@ -78,9 +78,6 @@ namespace StarterAssets
         [Tooltip("Additional degress to override the camera. Useful for fine tuning camera position when locked")]
         public float CameraAngleOverride = 0.0f;
 
-        [Tooltip("For locking the camera position on all axis")]
-        public bool LockCameraPosition = false;
-
         // cinemachine
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -134,16 +131,14 @@ namespace StarterAssets
 
         private void Awake()
         {
-            // get a reference to our main camera
-            if (_mainCamera == null)
-            {
-                _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-            }
+            photonView = GetComponent<PhotonView>();
+            if (_mainCamera == null) _mainCamera = transform.parent.Find("MainCamera").gameObject;
+            if (photonView != null && !photonView.IsMine) return;
         }
 
         private void Start()
         {
-            photonView = GetComponent<PhotonView>();
+            if (photonView != null && !photonView.IsMine) return;
 
             MoveSpeed = 5.0f;
             SprintSpeed = 7.0f;
@@ -168,11 +163,7 @@ namespace StarterAssets
 
         private void Update()
         {
-            if (photonView != null && !photonView.IsMine)
-            {
-                return; // Skip update for non-local players
-            }
-
+            if (photonView != null && !photonView.IsMine) return; 
 
             _hasAnimator = TryGetComponent(out _animator);
             float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
@@ -192,11 +183,7 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
-            if (photonView != null && !photonView.IsMine)
-            {
-                return; // Skip camera rotation for non-local players
-            }
-
+            if (photonView != null && !photonView.IsMine) return; 
             CameraRotation();
         }
 
@@ -228,7 +215,7 @@ namespace StarterAssets
         {
 
             // if there is an input and camera position is not fixed
-            if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
+            if (_input.look.sqrMagnitude >= _threshold )
             {
                 // float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
                 float deltaTimeMultiplier = Time.deltaTime;

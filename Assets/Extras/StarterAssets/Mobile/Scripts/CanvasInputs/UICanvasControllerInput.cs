@@ -20,11 +20,13 @@ namespace StarterAssets
         private string killFeedLog = "";
 
         [Header("Mobile Controls")]
-        public GameObject joystick;
-        public UIVirtualButton fireButton;   // Updated to UIVirtualButton
-        public UIVirtualButton aimButton;    // Updated to UIVirtualButton
-        public UIVirtualButton jumpButton;   // Updated to UIVirtualButton
-        public UIVirtualButton sprintButton; // Updated to UIVirtualButton
+        public GameObject Joystick_Move;
+        public GameObject Joystick_Look;
+        public UIVirtualButton fireButtonL;   
+        public UIVirtualButton fireButtonR;   
+        public UIVirtualButton aimButton;    
+        public UIVirtualButton jumpButton;   
+        public UIVirtualButton sprintButton; 
 
         private void Start()
         {
@@ -43,34 +45,15 @@ namespace StarterAssets
             crossHair = transform.Find("CrossHair")?.gameObject;
 
             // Assign Joystick and Buttons within MobileControls
-            joystick = transform.Find("Joystick_Move")?.gameObject;
-            fireButton = transform.Find("FireButton")?.GetComponent<UIVirtualButton>();
+            Joystick_Move = transform.Find("Joystick_Move")?.gameObject;
+            Joystick_Look = transform.Find("Joystick_Look")?.gameObject;
+            fireButtonL = transform.Find("FireButton L")?.GetComponent<UIVirtualButton>();
+            fireButtonR = transform.Find("FireButton R")?.GetComponent<UIVirtualButton>();
             aimButton = transform.Find("AimButton")?.GetComponent<UIVirtualButton>();
             jumpButton = transform.Find("JumpButton")?.GetComponent<UIVirtualButton>();
             sprintButton = transform.Find("SprintButton")?.GetComponent<UIVirtualButton>();
 
-            // Add event listeners for UIVirtualButton buttons
-            if (fireButton != null)
-            {
-                fireButton.buttonStateOutputEvent.AddListener(VirtualShootInput);
-            }
-
-            if (aimButton != null)
-            {
-                aimButton.buttonStateOutputEvent.AddListener(VirtualAimInput);
-            }
-
-            if (jumpButton != null)
-            {
-                jumpButton.buttonStateOutputEvent.AddListener(VirtualJumpInput);
-            }
-
-            if (sprintButton != null)
-            {
-                sprintButton.buttonStateOutputEvent.AddListener(VirtualSprintInput);
-            }
-
-            ConfigureDeviceSpecificUI();
+            // ConfigureDeviceSpecificUI();
         }
 
 
@@ -92,14 +75,17 @@ namespace StarterAssets
         {
 #if UNITY_IOS || UNITY_ANDROID
             fireButton.gameObject.SetActive(true);
-            joystick.gameObject.SetActive(true);
+            Joystick_Move.gameObject.SetActive(true);
+            Joystick_Look.gameObject.SetActive(true);
             jumpButton.gameObject.SetActive(true);
             aimButton.gameObject.SetActive(true);
             jumpButton.gameObject.SetActive(true);
             sprintButton.gameObject.SetActive(true);
 #else
-            fireButton.gameObject.SetActive(false);
-            joystick.gameObject.SetActive(false);
+            fireButtonL.gameObject.SetActive(false);
+            fireButtonR.gameObject.SetActive(false);
+            Joystick_Move.gameObject.SetActive(false);
+            Joystick_Look.gameObject.SetActive(false);
             jumpButton.gameObject.SetActive(false);
             aimButton.gameObject.SetActive(false);
             jumpButton.gameObject.SetActive(false);

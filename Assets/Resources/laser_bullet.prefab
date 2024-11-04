@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 4935978878707667737}
   - component: {fileID: -3869554151863621751}
   - component: {fileID: -9196426995869965862}
+  - component: {fileID: 5971724993722845807}
   m_Layer: 0
   m_Name: laser_bullet
   m_TagString: Untagged
@@ -194,6 +195,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: -3869554151863621751}
+  - {fileID: 5971724993722845807}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -228,3 +230,19 @@ MonoBehaviour:
   speed: 200
   lifetime: 3
   hitEffectPrefab: {fileID: 2955623459812423943, guid: f5507a8c6a22c404ab324980c4e8a11b, type: 3}
+--- !u!114 &5971724993722845807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1

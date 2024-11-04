@@ -1,16 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class BulletProjectile : MonoBehaviour
+public class BulletProjectile : MonoBehaviourPun
 {
     [SerializeField] public float speed = 100f;
     [SerializeField] public Transform vfx_Hit_red;
-    
+
     private Rigidbody bulletRigidBody;
-
-
-
 
     private void Awake()
     {
@@ -22,14 +20,16 @@ public class BulletProjectile : MonoBehaviour
         bulletRigidBody.linearVelocity = transform.forward * speed;
     }
 
-
     private void OnCollisionEnter(Collision other)
     {
-        Instantiate(vfx_Hit_red, transform.position, Quaternion.identity);
+        // Only the master client should handle the destruction and instantiation of effects
+        if (photonView.IsMine)
+        {
+            // Instantiate the hit effect
+            PhotonNetwork.Instantiate(vfx_Hit_red.name, transform.position, Quaternion.identity);
 
-        Destroy(gameObject);
+            // Destroy the bullet across the network
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
-
-
-
 }

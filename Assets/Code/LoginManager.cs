@@ -42,7 +42,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("Joined Lobby!");
-        StartTypingFeedback("Joined Lobby! Looking for a room...");
+        StartTypingFeedback("Joining random room...");
         PhotonNetwork.JoinRandomRoom();
     }
 
@@ -69,7 +69,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
     // Coroutine for the typing effect
     private IEnumerator TypeText(string message)
     {
-        feedbackText.text = ""; // Clear current text
+        feedbackText.text = "";
 
         foreach (char letter in message)
         {

@@ -27,7 +27,7 @@ public class MapGenerator : MonoBehaviour
 
     private void Start()
     {
-        // Only the Master Client generates the map
+        // Only the Master Client generates and synchronizes the map
         if (PhotonNetwork.IsMasterClient)
         {
             GenerateMap();
@@ -45,12 +45,10 @@ public class MapGenerator : MonoBehaviour
         }
 
         Vector3 planeSize = planeMeshRenderer.bounds.size;
-
-        // Calculate the bounds of the plane
         float halfPlaneWidth = planeSize.x / 2f;
         float halfPlaneLength = planeSize.z / 2f;
 
-        // Spawn obstacles
+        // Spawn obstacles using PhotonNetwork.Instantiate
         for (int i = 0; i < numObstacles; i++)
         {
             GameObject obstaclePrefab = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Count)];
@@ -60,8 +58,8 @@ public class MapGenerator : MonoBehaviour
             position.y = Mathf.Clamp(position.y, 0f, 3f);
             Quaternion randomRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
 
-            GameObject obstacle = Instantiate(obstaclePrefab, position, randomRotation);
-            obstacle.transform.SetParent(plane.transform);
+            GameObject obstacle = PhotonNetwork.Instantiate(obstaclePrefab.name, position, randomRotation);
+            // obstacle.transform.SetParent(plane.transform);
         }
 
         // Spawn the invisible walls and ceiling
@@ -70,7 +68,7 @@ public class MapGenerator : MonoBehaviour
 
     private void CreateInvisibleWallsAndCeiling(float halfWidth, float halfLength)
     {
-        // Create walls and ceiling here
+        // Create walls and ceiling here using PhotonNetwork.InstantiateRoomObject for non-visible objects
         CreateInvisibleWall(new Vector3(-halfWidth, wallHeight / 2f, 0), new Vector3(0.1f, wallHeight, halfLength * 2));
         CreateInvisibleWall(new Vector3(halfWidth, wallHeight / 2f, 0), new Vector3(0.1f, wallHeight, halfLength * 2));
         CreateInvisibleWall(new Vector3(0, wallHeight / 2f, halfLength), new Vector3(halfWidth * 2, wallHeight, 0.1f));
@@ -85,8 +83,12 @@ public class MapGenerator : MonoBehaviour
         wall.transform.localScale = scale;
         wall.transform.SetParent(plane.transform);
 
-        // Add a BoxCollider to the wall to act as a barrier
         BoxCollider wallCollider = wall.AddComponent<BoxCollider>();
         wallCollider.isTrigger = false;
+
+        // Sync wall position and scale across clients
+        PhotonView photonView = wall.AddComponent<PhotonView>();
+        wall.AddComponent<PhotonTransformView>();
+        PhotonNetwork.RegisterPhotonView(photonView);
     }
 }

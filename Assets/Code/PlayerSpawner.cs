@@ -6,19 +6,24 @@ public class PlayerSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] characterPrefabs;
     [SerializeField] private GameObject mapPlane;
-    [SerializeField] private int deleteme = 1;
+
+    // Public boolean for debugging
+    public bool spawnPlayerForDebug = false;
 
     private void Start()
     {
+        LoadCharacterPrefabs();
+        
         if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
         {
-            LoadCharacterPrefabs();
             SpawnPlayer();
         }
         else
         {
             Debug.LogWarning("Not connected to a Photon room. Player spawn canceled.");
         }
+
+        if (spawnPlayerForDebug) SpawnPlayer();
     }
 
     private void LoadCharacterPrefabs()
