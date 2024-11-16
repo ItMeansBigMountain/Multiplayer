@@ -1,6 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -78,17 +79,32 @@ public class MapGenerator : MonoBehaviour
 
     private void CreateInvisibleWall(Vector3 position, Vector3 scale)
     {
+        // Create a new GameObject for the invisible wall
         GameObject wall = new GameObject("Invisible Wall");
         wall.transform.position = position;
         wall.transform.localScale = scale;
         wall.transform.SetParent(plane.transform);
 
+        // Add a BoxCollider component to the wall
         BoxCollider wallCollider = wall.AddComponent<BoxCollider>();
         wallCollider.isTrigger = false;
 
-        // Sync wall position and scale across clients
+        // Add PhotonView and Transform Sync Components
         PhotonView photonView = wall.AddComponent<PhotonView>();
         wall.AddComponent<PhotonTransformView>();
-        PhotonNetwork.RegisterPhotonView(photonView);
+
+        // Assign a unique PhotonView ID
+        if (PhotonNetwork.AllocateViewID(photonView))
+        {
+            // Successfully assigned a unique ID to the PhotonView
+            //Debug.Log($"Successfully allocated PhotonView ID: {photonView.ViewID} for {wall.name}");
+        }
+        else
+        {
+            // Failed to allocate a unique ID
+            Debug.LogError("Failed to allocate PhotonView ID for invisible wall.");
+        }
     }
+
+
 }

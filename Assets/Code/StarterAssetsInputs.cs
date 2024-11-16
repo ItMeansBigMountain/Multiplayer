@@ -27,8 +27,6 @@ namespace StarterAssets
         private void Awake()
         {
             photonView = transform.parent.GetComponent<PhotonView>();
-            print(photonView.Owner);
-            print(photonView.IsMine);
         }
 
 #if ENABLE_INPUT_SYSTEM
