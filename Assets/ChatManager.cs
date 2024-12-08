@@ -10,6 +10,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     private ChatClient chatClient;
     public TMP_InputField chatInput;
     public TextMeshProUGUI chatDisplay;
+    public Button sendButton; // Add a UI button for mobile users
 
     private bool isTyping = false; // Track if the player is currently typing
 
@@ -17,6 +18,9 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     {
         chatClient = new ChatClient(this);
         chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, "1.0", new AuthenticationValues(PhotonNetwork.NickName));
+
+        // Add listener for the send button
+        sendButton.onClick.AddListener(SendMessage);
 
         // Listen to "Enter" key while typing
         chatInput.onEndEdit.AddListener(OnInputEndEdit);
@@ -29,10 +33,13 @@ public class ChatManager : MonoBehaviour, IChatClientListener
             chatClient.Service(); // Ensure the client processes incoming messages
         }
 
-        // Detect "Enter" key for toggling typing or sending message
-        if (Keyboard.current.enterKey.wasPressedThisFrame)
+        // Detect "Enter" key for toggling typing or sending message (PC only)
+        if (Application.platform != RuntimePlatform.Android && Application.platform != RuntimePlatform.IPhonePlayer)
         {
-            HandleEnterPress();
+            if (Keyboard.current.enterKey.wasPressedThisFrame)
+            {
+                HandleEnterPress();
+            }
         }
     }
 
