@@ -4,9 +4,11 @@ using Photon.Pun;
 [RequireComponent(typeof(Rigidbody), typeof(PhotonRigidbodyView))]
 public class network_bullet_projectile : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private float speed = 20f;         
-    [SerializeField] private float lifetime = 3f;       
-    [SerializeField] private GameObject hitEffectPrefab;
+    [Header("Bullet Settings")]
+    [SerializeField] private float speed = 20f;           // Speed of the bullet
+    [SerializeField] private float lifetime = 3f;        // Lifetime before destruction
+    [SerializeField] private int damage = 20;            // Damage dealt to players
+    [SerializeField] private GameObject hitEffectPrefab; // Effect when the bullet hits something
 
     private Rigidbody rb;
 
@@ -15,7 +17,7 @@ public class network_bullet_projectile : MonoBehaviourPunCallbacks
         // Get the Rigidbody component
         rb = GetComponent<Rigidbody>();
 
-        // Ensure the Rigidbody is kinematic for non-owners to avoid physics conflicts
+        // Make the Rigidbody kinematic for non-owners to avoid physics conflicts
         if (!photonView.IsMine)
         {
             rb.isKinematic = true;
@@ -24,27 +26,36 @@ public class network_bullet_projectile : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        // Set the initial velocity in the forward direction
         if (photonView.IsMine)
         {
-            // USING TRANSFORM
-            // transform.Translate(Vector3.forward * speed * Time.deltaTime);
-
-            // USING GRAVITY
+            // Set initial velocity in the forward direction
             rb.linearVelocity = transform.forward * speed;
+
+            // Destroy the bullet after a certain time to prevent lingering
             Invoke("DestroyBullet", lifetime);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (photonView.IsMine) // Ensure only the owner handles collision
+        Debug.Log($"Bullet hit: {other.name}");
+
+
+        if (photonView.IsMine)
         {
-            // Check for impact
+            // Check if the collided object has the player script
+            ArenaShooter_PlayerControls player = other.GetComponent<ArenaShooter_PlayerControls>();
+
+            if (player != null)
+            {
+                // Apply damage to the player
+                player.ApplyDamage(damage);
+            }
+
+            // Spawn a hit effect (local only, not networked)
             if (hitEffectPrefab != null)
             {
-                // Instantiate hit effect locally (not networked)
-                Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+                PhotonNetwork.Instantiate("Hit_03", transform.position, Quaternion.identity);
             }
 
             // Destroy the bullet across the network
@@ -54,7 +65,7 @@ public class network_bullet_projectile : MonoBehaviourPunCallbacks
 
     private void DestroyBullet()
     {
-        // Safely destroy the bullet after the lifetime
+        // Safely destroy the bullet after its lifetime expires
         if (photonView.IsMine)
         {
             PhotonNetwork.Destroy(gameObject);

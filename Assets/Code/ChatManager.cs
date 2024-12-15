@@ -82,7 +82,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         string message = chatInput.text;
         if (!string.IsNullOrWhiteSpace(message))
         {
-            chatClient.PublishMessage("GameRoom", $"{PhotonNetwork.NickName}: {message}");
+            chatClient.PublishMessage("GameRoom", message);
             chatInput.text = ""; // Clear the input field after sending
         }
 

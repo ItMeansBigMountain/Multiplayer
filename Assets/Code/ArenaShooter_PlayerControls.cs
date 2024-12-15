@@ -10,6 +10,9 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
     [SerializeField] private float Normal_Sensitivity = 125f;
     [SerializeField] private float Aim_Sensitivity = 100f;
     [SerializeField] private LayerMask mouseColliderLayerMask;
+    [Header("Health Settings")]
+    [SerializeField] private int maxHealth = 100;
+    private int currentHealth;
 
     [Header("Auto-Configured Components")]
     [SerializeField] private GameObject _mainCamera;
@@ -32,6 +35,9 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
     {
         if (photonView || photonView.IsMine)
         {
+            //SET HP 
+            currentHealth = maxHealth;
+
             // GET COMPONENTS 
             starterAssetsInputs = GetComponent<StarterAssetsInputs>();
             thirdPersonController = GetComponent<ThirdPersonController>();
@@ -166,4 +172,30 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
         }
     }
 
+
+
+    [PunRPC]
+    public void TakeDamage(int damage)
+    {
+        if (!photonView.IsMine) return;
+
+        currentHealth -= damage;
+        Debug.Log($"{gameObject.name} took {damage} damage. Current health: {currentHealth}");
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log($"{gameObject.name} has died!");
+        // Add logic for player respawn or elimination.
+    }
+
+    public void ApplyDamage(int damage)
+    {
+        photonView.RPC("TakeDamage", RpcTarget.All, damage); // Call RPC for all players
+    }
 }
