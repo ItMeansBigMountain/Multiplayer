@@ -1,5 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(Rigidbody), typeof(PhotonRigidbodyView))]
 public class network_bullet_projectile : MonoBehaviourPunCallbacks
@@ -38,7 +39,7 @@ public class network_bullet_projectile : MonoBehaviourPunCallbacks
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Bullet hit: {other.name}");
+        //Debug.Log($"Trigger Bullet hit: {other.name}");
 
 
         if (photonView.IsMine)
@@ -50,6 +51,43 @@ public class network_bullet_projectile : MonoBehaviourPunCallbacks
             {
                 // Apply damage to the player
                 player.ApplyDamage(damage);
+            }
+
+            // Spawn a hit effect (local only, not networked)
+            if (hitEffectPrefab != null)
+            {
+                PhotonNetwork.Instantiate("Hit_03", transform.position, Quaternion.identity);
+            }
+
+            // Destroy the bullet across the network
+            PhotonNetwork.Destroy(gameObject);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //Debug.Log($"Collision Bullet hit: {collision.gameObject.name}");
+
+
+        if (photonView.IsMine)
+        {
+            // Check if the collided object has the player script
+            ArenaShooter_PlayerControls player = collision.gameObject.GetComponentInParent<ArenaShooter_PlayerControls>();
+
+            if (player != null)
+            {
+                // Apply damage to the player
+                player.ApplyDamage(damage);
+
+                if (player.currentHealth > 0)
+                {
+                    Debug.Log($"{collision.transform.parent.root.gameObject.name} took {damage} damage.");
+                }
+                else
+                {
+                    Debug.Log($"{transform.parent.root.gameObject.name} has killed {collision.transform.parent.root.gameObject.name}!");
+                }
+
             }
 
             // Spawn a hit effect (local only, not networked)

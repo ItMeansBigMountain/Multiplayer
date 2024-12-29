@@ -13,7 +13,7 @@ public class PlayerSpawner : MonoBehaviour
     private void Start()
     {
         LoadCharacterPrefabs();
-        
+
         if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
         {
             SpawnPlayer();
@@ -23,7 +23,15 @@ public class PlayerSpawner : MonoBehaviour
             Debug.LogWarning("Not connected to a Photon room. Player spawn canceled.");
         }
 
-        if (spawnPlayerForDebug) SpawnPlayer();
+    }
+
+    private void Update()
+    {
+        if (spawnPlayerForDebug)
+        {
+            SpawnPlayer();
+            spawnPlayerForDebug=false;
+        }
     }
 
     private void LoadCharacterPrefabs()
@@ -44,7 +52,7 @@ public class PlayerSpawner : MonoBehaviour
         }
     }
 
-    private void SpawnPlayer()
+    public void SpawnPlayer()
     {
         // Check if mapPlane has a Renderer component
         Renderer mapRenderer = mapPlane.GetComponent<Renderer>();

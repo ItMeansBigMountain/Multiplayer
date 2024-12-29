@@ -3,6 +3,8 @@ using Unity.Cinemachine;
 using StarterAssets;
 using UnityEngine.InputSystem;
 using Photon.Pun;
+using System.Collections;
+using Photon.Realtime;
 
 public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
 {
@@ -11,8 +13,8 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
     [SerializeField] private float Aim_Sensitivity = 100f;
     [SerializeField] private LayerMask mouseColliderLayerMask;
     [Header("Health Settings")]
-    [SerializeField] private int maxHealth = 100;
-    private int currentHealth;
+    [SerializeField] public int maxHealth = 100;
+    public int currentHealth;
 
     [Header("Auto-Configured Components")]
     [SerializeField] private GameObject _mainCamera;
@@ -31,7 +33,7 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
 
     // private PhotonView photonView;
 
-    void Awake()
+    void Start()
     {
         if (photonView || photonView.IsMine)
         {
@@ -174,14 +176,23 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
 
 
 
+    public void ApplyDamage(int damage)
+    {
+        if (photonView == null || !photonView.IsMine)
+        {
+            Debug.LogWarning("PhotonView not available or not owned by this client.");
+            return;
+        }
+        photonView.RPC("TakeDamage", RpcTarget.All, damage);
+    }
+
+
     [PunRPC]
     public void TakeDamage(int damage)
     {
+        Debug.Log($"Current health: {currentHealth}");
         if (!photonView.IsMine) return;
-
         currentHealth -= damage;
-        Debug.Log($"{gameObject.name} took {damage} damage. Current health: {currentHealth}");
-
         if (currentHealth <= 0)
         {
             Die();
@@ -190,12 +201,39 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
 
     private void Die()
     {
-        Debug.Log($"{gameObject.name} has died!");
-        // Add logic for player respawn or elimination.
+        // Notify all clients of the death state
+        photonView.RPC("HandleDeath", RpcTarget.All);
     }
 
-    public void ApplyDamage(int damage)
+
+
+    [PunRPC]
+    private void HandleDeath()
     {
-        photonView.RPC("TakeDamage", RpcTarget.All, damage); // Call RPC for all players
+
+        Debug.Log($"{transform.parent.root.gameObject.name} handling death locally...");
+        
+        // Perform local death actions, such as playing animations or effects
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Destroy(transform.parent.root.gameObject);
+            //anim.SetTrigger("Die"); 
+            Respawn();
+        }
+
+    }
+
+
+    private void Respawn()
+    {
+        if (photonView.IsMine)
+        {
+            // Use the PlayerSpawner to handle respawning
+            FindFirstObjectByType<PlayerSpawner>()?.SpawnPlayer();
+
+            // Re-enable the player and reset HP
+            gameObject.SetActive(true);
+            currentHealth = maxHealth; // Reset HP to full
+        }
     }
 }

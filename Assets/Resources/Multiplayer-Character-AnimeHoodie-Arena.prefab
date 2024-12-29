@@ -1892,6 +1892,7 @@ MonoBehaviour:
   mouseColliderLayerMask:
     serializedVersion: 2
     m_Bits: 1
+  maxHealth: 100
   _mainCamera: {fileID: 0}
   playerInput: {fileID: 0}
   followCamera: {fileID: 0}
