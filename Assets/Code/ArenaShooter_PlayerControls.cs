@@ -174,8 +174,6 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
         }
     }
 
-
-
     public void ApplyDamage(int damage)
     {
         if (photonView == null || !photonView.IsMine)
@@ -204,7 +202,6 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
         // Notify all clients of the death state
         photonView.RPC("HandleDeath", RpcTarget.All);
     }
-
 
 
     [PunRPC]

@@ -11,7 +11,25 @@ public class RandomAppearance : MonoBehaviour
 
     // List of possible random colors
     private Color[] colorOptions = {
-        Color.red, Color.green, Color.blue, Color.yellow, Color.cyan, Color.magenta, Color.white, Color.black
+        Color.red,
+        Color.green,
+        Color.blue,
+        Color.yellow,
+        Color.cyan,
+        Color.magenta,
+        Color.white,
+        Color.black,
+        Color.gray,
+        Color.grey,
+        Color.clear,
+        new Color(1f, 0.5f, 0f),
+        new Color(0.5f, 0f, 1f),
+        new Color(0f, 1f, 0.5f),
+        new Color(1f, 1f, 0.6f),
+        new Color(0.8f, 0.2f, 0.2f),
+        new Color(0.2f, 0.8f, 0.2f),
+        new Color(0.2f, 0.2f, 0.8f),
+        new Color(1f, 0.5f, 0.8f)
     };
 
     private Renderer objectRenderer;
