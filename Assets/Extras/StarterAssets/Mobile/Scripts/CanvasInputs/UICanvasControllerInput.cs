@@ -27,6 +27,7 @@ namespace StarterAssets
         public UIVirtualButton aimButton;    
         public UIVirtualButton jumpButton;   
         public UIVirtualButton sprintButton; 
+        public bool aiming = false;
 
         private void Start()
         {
@@ -118,7 +119,8 @@ namespace StarterAssets
 
         public void VirtualAimInput(bool virtualAimState)
         {
-            starterAssetsInputs.AimInput(virtualAimState);
+            aiming = !aiming;
+            starterAssetsInputs.AimInput(aiming);
         }
 
         public void VirtualShootInput(bool virtualShootState)
