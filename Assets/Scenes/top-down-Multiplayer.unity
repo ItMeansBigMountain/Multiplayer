@@ -809,9 +809,17 @@ PrefabInstance:
       propertyPath: plane
       value: 
       objectReference: {fileID: 171782946}
+    - target: {fileID: 4392743828443168479, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6035261787119064488, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
       propertyPath: m_Name
       value: MapGenerator
+      objectReference: {fileID: 0}
+    - target: {fileID: 8280673837116703905, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
