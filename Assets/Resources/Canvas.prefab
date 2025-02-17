@@ -1453,7 +1453,7 @@ MonoBehaviour:
   containerRect: {fileID: 4597830673120815364}
   handleRect: {fileID: 9234883671279034}
   joystickRange: 60
-  magnitudeMultiplier: 10
+  magnitudeMultiplier: 5
   invertXOutputValue: 0
   invertYOutputValue: 1
   joystickOutputEvent:
