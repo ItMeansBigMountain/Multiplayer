@@ -19,6 +19,9 @@ public class LoginManager : MonoBehaviourPunCallbacks
     public Transform roomListContainer;
     public Button NickNameCheckInButton;
 
+    [Header("Map Selection")]
+    public TMP_Dropdown mapDropdown;
+
     [Header("Create Room")]
     public TMP_InputField createRoomInput;
     public Button createRoomButton;
@@ -128,27 +131,46 @@ public class LoginManager : MonoBehaviourPunCallbacks
             Destroy(child.gameObject);
     }
 
+    string GetSelectedMapName()
+    {
+        switch (mapDropdown.value)
+        {
+            case 0: return "top-down-Multiplayer-Arena";
+            case 1: return "top-down-Multiplayer-Spiral";
+            case 2: return "top-down-Multiplayer-Gorilla";
+            default: return "top-down-Multiplayer-Arena";
+        }
+    }
+
+
     void CreateRoom()
     {
         string roomName = createRoomInput.text;
-        if (!string.IsNullOrEmpty(roomName))
-        {
-            RoomOptions options = new RoomOptions { MaxPlayers = 10, IsVisible = true, IsOpen = true };
-            PhotonNetwork.CreateRoom(roomName, options);
-            Log($"Creating room: {roomName}");
-        }
-        else
+        if (string.IsNullOrEmpty(roomName))
         {
             Log("Room name cannot be empty.");
+            return;
         }
+
+        string selectedMap = GetSelectedMapName();
+
+        RoomOptions options = new RoomOptions { MaxPlayers = 100, IsVisible = true, IsOpen = true };
+        PhotonNetwork.CreateRoom(roomName, options);
+        Log($"Creating room '{roomName}' with map: {selectedMap}");
+
+        // Save selected map to use on join
+        PlayerPrefs.SetString("selectedMap", selectedMap);
     }
+
 
 
     public override void OnJoinedRoom()
     {
-        Log("Room joined. Loading scene...");
-        PhotonNetwork.LoadLevel("top-down-Multiplayer");
+        string selectedMap = PlayerPrefs.GetString("selectedMap", "top-down-Multiplayer-Arena");
+        Log($"Room joined. Loading map: {selectedMap}...");
+        PhotonNetwork.LoadLevel(selectedMap);
     }
+
 
     public override void OnDisconnected(DisconnectCause cause)
     {
