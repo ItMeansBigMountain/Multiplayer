@@ -1,87 +1,173 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LoginManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private TMP_InputField usernameInputField;
-    [SerializeField] private Button joinButton;
-    [SerializeField] private TextMeshProUGUI feedbackText;
+    [Header("Login")]
+    public TMP_InputField usernameInputField;
 
-    private void Start()
+    [Header("Feedback")]
+    public TextMeshProUGUI feedbackText;
+
+    [Header("Room Browser")]
+    public GameObject roomListItemPrefab;
+    public Transform roomListContainer;
+    public Button NickNameCheckInButton;
+
+    [Header("Create Room")]
+    public TMP_InputField createRoomInput;
+    public Button createRoomButton;
+
+    private Dictionary<string, RoomInfo> cachedRoomList = new Dictionary<string, RoomInfo>();
+
+    void Start()
     {
-        joinButton.onClick.AddListener(OnJoinButtonClicked);
+
+        createRoomButton.onClick.AddListener(CreateRoom);
+        NickNameCheckInButton.onClick.AddListener(RefreshRooms);
     }
 
-    private void OnJoinButtonClicked()
+    IEnumerator ConnectAfterDisconnect()
+    {
+        while (PhotonNetwork.IsConnected)
+            yield return null;
+
+        PhotonNetwork.ConnectUsingSettings();
+        Log("Reconnecting to Photon...");
+    }
+
+    void RefreshRooms()
     {
         string username = usernameInputField.text;
 
-        if (username.Length > 1)
+        if (string.IsNullOrEmpty(username))
+            username = "Player" + Random.Range(1000, 9999); // fallback nickname
+
+        PhotonNetwork.NickName = username;
+
+        if (username.EndsWith(".tzbd"))
+            Log("ADMIN PRIV UNLOCKED");
+
+        if (PhotonNetwork.IsConnected)
         {
-            PhotonNetwork.NickName = username;
-            PhotonNetwork.ConnectUsingSettings();
-            StartTypingFeedback("Connecting...");
+            PhotonNetwork.Disconnect(); // restart connection fully
+            StartCoroutine(ConnectAfterDisconnect());
         }
         else
         {
-            StartTypingFeedback("Please enter a valid username.");
-            Debug.LogWarning("Username is empty! Please enter a valid username.");
+            PhotonNetwork.ConnectUsingSettings();
+            Log($"Connecting as {username}...");
         }
+    }
+
+
+    void OnConnectClicked()
+    {
+        string username = usernameInputField.text;
+        if (!string.IsNullOrEmpty(username))
+        {
+            PhotonNetwork.NickName = username;
+            PhotonNetwork.ConnectUsingSettings();
+            Log("Connecting...");
+        }
+        else Log("Please enter a nickname.");
     }
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("Connected to Master Server");
-        StartTypingFeedback("Connected to Master Server. Joining Lobby...");
+        Log("Connected to Network Vendor.");
         PhotonNetwork.JoinLobby();
     }
 
     public override void OnJoinedLobby()
     {
-        Debug.Log("Joined Lobby!");
-        StartTypingFeedback("Joining random room...");
-        PhotonNetwork.JoinRandomRoom();
+        Log("Connected to Application");
+        ClearRoomList();
     }
 
-    public override void OnJoinRandomFailed(short returnCode, string message)
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Debug.Log("No rooms available, creating a new room...");
-        StartTypingFeedback("No rooms available, creating a new room...");
-        PhotonNetwork.CreateRoom(null, new Photon.Realtime.RoomOptions { MaxPlayers = 10 });
-    }
-
-    public override void OnJoinedRoom()
-    {
-        Debug.Log("Successfully joined a room!");
-        StartTypingFeedback("Joined room! Loading game...");
-        PhotonNetwork.LoadLevel("top-down-Multiplayer");
-    }
-
-    public override void OnDisconnected(Photon.Realtime.DisconnectCause cause)
-    {
-        Debug.LogWarningFormat("Disconnected from Photon with reason {0}", cause);
-        StartTypingFeedback($"Disconnected: {cause}");
-    }
-
-    // Coroutine for the typing effect
-    private IEnumerator TypeText(string message)
-    {
-        feedbackText.text = "";
-
-        foreach (char letter in message)
+        foreach (RoomInfo room in roomList)
         {
-            feedbackText.text += letter; // Add one letter at a time
-            yield return new WaitForSeconds(0.05f); // Adjust speed as desired
+            if (room.RemovedFromList)
+                cachedRoomList.Remove(room.Name);
+            else
+                cachedRoomList[room.Name] = room;
+        }
+
+        UpdateRoomListUI();
+    }
+
+    void UpdateRoomListUI()
+    {
+        ClearRoomList();
+
+        foreach (var room in cachedRoomList.Values)
+        {
+            GameObject item = Instantiate(roomListItemPrefab, roomListContainer);
+            var text = item.GetComponentInChildren<TextMeshProUGUI>();
+            var button = item.GetComponentInChildren<Button>();
+
+            text.text = $"{room.Name} ({room.PlayerCount}/{room.MaxPlayers})";
+            button.onClick.AddListener(() =>
+            {
+                Log($"Joining room: {room.Name}");
+                PhotonNetwork.JoinRoom(room.Name);
+            });
         }
     }
 
-    // Method to start typing feedback
-    private void StartTypingFeedback(string message)
+    void ClearRoomList()
     {
-        StopAllCoroutines(); // Stop any ongoing typing effect
-        StartCoroutine(TypeText(message)); // Start the new typing effect
+        foreach (Transform child in roomListContainer)
+            Destroy(child.gameObject);
+    }
+
+    void CreateRoom()
+    {
+        string roomName = createRoomInput.text;
+        if (!string.IsNullOrEmpty(roomName))
+        {
+            RoomOptions options = new RoomOptions { MaxPlayers = 10, IsVisible = true, IsOpen = true };
+            PhotonNetwork.CreateRoom(roomName, options);
+            Log($"Creating room: {roomName}");
+        }
+        else
+        {
+            Log("Room name cannot be empty.");
+        }
+    }
+
+
+    public override void OnJoinedRoom()
+    {
+        Log("Room joined. Loading scene...");
+        PhotonNetwork.LoadLevel("top-down-Multiplayer");
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Log($"Disconnected: {cause}");
+    }
+
+    void Log(string msg)
+    {
+        StopAllCoroutines();
+        StartCoroutine(TypeText(msg));
+    }
+
+    IEnumerator TypeText(string msg)
+    {
+        feedbackText.text = "";
+        foreach (char c in msg)
+        {
+            feedbackText.text += c;
+            yield return new WaitForSeconds(0.02f);
+        }
     }
 }

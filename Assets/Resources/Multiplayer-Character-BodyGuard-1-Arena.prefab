@@ -1401,6 +1401,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   maxHealth: 100
+  currentHealth: 0
   _mainCamera: {fileID: 0}
   playerInput: {fileID: 0}
   followCamera: {fileID: 0}
