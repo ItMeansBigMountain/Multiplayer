@@ -6,23 +6,33 @@ public class material_decay : MonoBehaviour
     public float radius = 4f;
     public float destructionDelay = 5f;
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!IsSmashable(collision.gameObject)) return;
-
-        ApplySmashForce(collision.rigidbody, collision.contacts[0].point);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsSmashable(other.gameObject)) return;
+        Debug.Log($"[GORILLA TRIGGER] touched: {other.gameObject.name}");
 
-        ApplySmashForce(other.attachedRigidbody, other.ClosestPoint(transform.position));
+        if (!IsSmashable(other.gameObject))
+        {
+            Debug.Log($"[SKIP] {other.gameObject.name} is not tagged 'Obstacle'.");
+            return;
+        }
+
+        Rigidbody rb = other.attachedRigidbody ?? AddRigidbody(other.gameObject);
+        ApplySmashForce(rb, other.ClosestPoint(transform.position));
     }
 
     bool IsSmashable(GameObject obj)
     {
-        return obj.CompareTag("Destructible") && !obj.CompareTag("Floor");
+        return obj.CompareTag("obstacle");
+    }
+
+    Rigidbody AddRigidbody(GameObject obj)
+    {
+        Debug.Log($"[RIGIDBODY ADDED] to {obj.name}");
+        Rigidbody rb = obj.AddComponent<Rigidbody>();
+        rb.mass = 1f;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        return rb;
     }
 
     void ApplySmashForce(Rigidbody rb, Vector3 contactPoint)
@@ -31,6 +41,8 @@ public class material_decay : MonoBehaviour
 
         rb.isKinematic = false;
         rb.AddExplosionForce(force, contactPoint, radius);
+
+        Debug.Log($"[SMASH] {rb.gameObject.name} hit with force {force}");
 
         Destroy(rb.gameObject, destructionDelay);
     }

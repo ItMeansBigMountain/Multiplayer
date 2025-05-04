@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -100337610364120794}
   m_Layer: 0
   m_Name: Box_350x250x200_Prefab
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 73

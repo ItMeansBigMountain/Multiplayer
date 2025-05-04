@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -4932697858956228215}
   m_Layer: 0
   m_Name: Wall_Prefab
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 73
