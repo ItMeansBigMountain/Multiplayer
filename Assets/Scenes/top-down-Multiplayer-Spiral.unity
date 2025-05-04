@@ -777,6 +777,10 @@ PrefabInstance:
       propertyPath: ceilingHeight
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2943889236960280255, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
       propertyPath: m_LocalPosition.x
       value: 740.25

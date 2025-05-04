@@ -30,6 +30,8 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
     [SerializeField] private ThirdPersonController thirdPersonController;
     [SerializeField] private float raycastMaxRange = 999f;
     [SerializeField] private InputActionReference lookInput;
+    [SerializeField] private GameObject HealthBar;
+
 
     // private PhotonView photonView;
 
@@ -50,6 +52,7 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
 
             // GET GAME OBJECTS
             _mainCamera = transform.parent.Find("MainCamera")?.gameObject;
+            HealthBar = transform.Find("Health_Bar").gameObject;
             lazerPointer = transform.parent.Find("lazer dot")?.gameObject;
             bullet_Prefab = Resources.Load<GameObject>("laser_bullet");
             shotPoint = transform.Find("shotPoint");
@@ -191,6 +194,7 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
         Debug.Log($"Current health: {currentHealth}");
         if (!photonView.IsMine) return;
         currentHealth -= damage;
+        HealthBar.GetComponent<HealthBar>().UpdateHealthBar(currentHealth, maxHealth);
         if (currentHealth <= 0)
         {
             Die();

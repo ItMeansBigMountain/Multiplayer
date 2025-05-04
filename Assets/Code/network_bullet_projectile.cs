@@ -61,6 +61,8 @@ public class network_bullet_projectile : MonoBehaviourPunCallbacks
 
             // Destroy the bullet across the network
             PhotonNetwork.Destroy(gameObject);
+
+            Debug.Log($"Bullet hit: {other.name}");
         }
     }
 

@@ -140,6 +140,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 171782946}
     - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
       propertyPath: numObstacles
       value: 200
       objectReference: {fileID: 0}
@@ -615,9 +619,6 @@ PrefabInstance:
       addedObject: {fileID: 347232448}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a1898e91f5346dc4fbf48cc85079f211, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 347232449}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a1898e91f5346dc4fbf48cc85079f211, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 347232450}
     - targetCorrespondingSourceObject: {fileID: -439427348918085801, guid: a1898e91f5346dc4fbf48cc85079f211, type: 3}
       insertIndex: -1
@@ -832,21 +833,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &347232449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 347232443}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26167f7632fbc934d9bcb243eb84ac1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  force: 750
-  radius: 4
-  destructionDelay: 5
 --- !u!135 &347232450
 SphereCollider:
   m_ObjectHideFlags: 0

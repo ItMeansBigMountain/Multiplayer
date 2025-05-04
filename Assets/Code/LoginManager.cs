@@ -42,6 +42,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
 
         PhotonNetwork.ConnectUsingSettings();
         Log("Reconnecting to Photon...");
+        print("Reconnecting to Photon...");
     }
 
     void RefreshRooms()
@@ -55,6 +56,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
 
         if (username.EndsWith(".tzbd"))
             Log("ADMIN PRIV UNLOCKED");
+            print("ADMIN PRIV UNLOCKED");
 
         if (PhotonNetwork.IsConnected)
         {
@@ -65,6 +67,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.ConnectUsingSettings();
             Log($"Connecting as {username}...");
+            print($"Connecting as {username}...");
         }
     }
 
@@ -77,6 +80,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
             PhotonNetwork.NickName = username;
             PhotonNetwork.ConnectUsingSettings();
             Log("Connecting...");
+            print("Connecting...");
         }
         else Log("Please enter a nickname.");
     }
@@ -84,19 +88,30 @@ public class LoginManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Log("Connected to Network Vendor.");
+        print("Connected to Network Vendor.");
         PhotonNetwork.JoinLobby();
     }
 
     public override void OnJoinedLobby()
     {
         Log("Connected to Application");
+        print("Connected to Application");
         ClearRoomList();
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        Log("Room list updated.");
+        print("Room list updated.");
+
+
+
+        // Update the cached room list
         foreach (RoomInfo room in roomList)
         {
+            // DEBUGGING
+            print(room);
+
             if (room.RemovedFromList)
                 cachedRoomList.Remove(room.Name);
             else
@@ -120,6 +135,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
             button.onClick.AddListener(() =>
             {
                 Log($"Joining room: {room.Name}");
+                print($"Joining room: {room.Name}");
                 PhotonNetwork.JoinRoom(room.Name);
             });
         }
@@ -135,9 +151,9 @@ public class LoginManager : MonoBehaviourPunCallbacks
     {
         switch (mapDropdown.value)
         {
-            case 0: return "top-down-Multiplayer-Arena";
+            case 0: return "top-down-Multiplayer-Gorilla";
             case 1: return "top-down-Multiplayer-Spiral";
-            case 2: return "top-down-Multiplayer-Gorilla";
+            case 2: return "top-down-Multiplayer-Arena";
             default: return "top-down-Multiplayer-Arena";
         }
     }
@@ -149,6 +165,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
         if (string.IsNullOrEmpty(roomName))
         {
             Log("Room name cannot be empty.");
+            print("Room name cannot be empty.");
             return;
         }
 
@@ -157,6 +174,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
         RoomOptions options = new RoomOptions { MaxPlayers = 100, IsVisible = true, IsOpen = true };
         PhotonNetwork.CreateRoom(roomName, options);
         Log($"Creating room '{roomName}' with map: {selectedMap}");
+        print($"Creating room '{roomName}' with map: {selectedMap}");
 
         // Save selected map to use on join
         PlayerPrefs.SetString("selectedMap", selectedMap);
@@ -168,13 +186,15 @@ public class LoginManager : MonoBehaviourPunCallbacks
     {
         string selectedMap = PlayerPrefs.GetString("selectedMap", "top-down-Multiplayer-Arena");
         Log($"Room joined. Loading map: {selectedMap}...");
+        print($"Room joined. Loading map: {selectedMap}...");
         PhotonNetwork.LoadLevel(selectedMap);
     }
 
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        Log($"Disconnected: {cause}");
+        Log($"Disconnected: {cause}... Please reconnect!");
+        print($"Disconnected: {cause}");
     }
 
     void Log(string msg)

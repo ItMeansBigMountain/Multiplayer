@@ -37,7 +37,7 @@ public class SpiralTowerGenerator : MonoBehaviour
         }
     }
 
-    private void GenerateSpiralTower()
+    public void GenerateSpiralTower()
     {
         Renderer floorRenderer = floorPlane.GetComponent<Renderer>();
         if (floorRenderer == null)

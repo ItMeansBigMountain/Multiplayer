@@ -35,7 +35,7 @@ public class random_gen_arena : MonoBehaviour
         }
     }
 
-    private void GenerateMap()
+    public void GenerateMap()
     {
         // Get the size of the plane
         MeshRenderer planeMeshRenderer = plane.GetComponent<MeshRenderer>();

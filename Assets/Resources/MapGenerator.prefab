@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 386717487413074579}
   - component: {fileID: 3071589189761976152}
   - component: {fileID: 1996399728832333390}
+  - component: {fileID: 5456149891665601494}
   m_Layer: 0
   m_Name: MapGenerator
   m_TagString: Untagged
@@ -92,7 +93,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6035261787119064488}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45701b964ff244d4b8c6654d2981a57d, type: 3}
   m_Name: 
@@ -104,3 +105,16 @@ MonoBehaviour:
   plane: {fileID: 0}
   wallHeight: 100
   ceilingHeight: 100
+--- !u!114 &5456149891665601494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6035261787119064488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625af05794c27a64c85af1ef5f53a234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reload: 0

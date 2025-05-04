@@ -766,6 +766,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 171782946}
     - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
       propertyPath: obstaclePrefabs.Array.size
       value: 9
       objectReference: {fileID: 0}

@@ -8,6 +8,7 @@ TagManager:
   - laser_target
   - Bullet
   - obstacle
+  - floor
   layers:
   - Default
   - TransparentFX
