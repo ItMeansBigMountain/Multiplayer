@@ -3771,7 +3771,6 @@ MonoBehaviour:
   TopClamp: 70
   BottomClamp: -30
   CameraAngleOverride: 0
-  LockCameraPosition: 0
 --- !u!114 &318349865166516065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3809,7 +3808,6 @@ MonoBehaviour:
   Shoot: 0
   analogMovement: 0
   cursorLocked: 1
-  cursorInputForLook: 1
 --- !u!114 &7533236695164044701
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -761,6 +761,50 @@ PrefabInstance:
       propertyPath: floorPlane
       value: 
       objectReference: {fileID: 171782946}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: plane
+      value: 
+      objectReference: {fileID: 171782946}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: obstaclePrefabs.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2765075023489016845, guid: 687dbafc2b84b2846b9a4a7a7dae2a7e, type: 3}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3051928965768018776, guid: 7b846d8f536f007498c941069487ce81, type: 3}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 899428459418414007, guid: e5f4daf24146ee040b5a2d7a73b30aa0, type: 3}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8924170145835402666, guid: 8a7437817844dce4894b049de73b75f2, type: 3}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[4]'
+      value: 
+      objectReference: {fileID: 1335415992372505392, guid: 466621a4836aa504c87c15d88722d465, type: 3}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[5]'
+      value: 
+      objectReference: {fileID: 7561066613761435406, guid: 50a0925b0c22af146a2d15615f815a1c, type: 3}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[6]'
+      value: 
+      objectReference: {fileID: 8585387905218658219, guid: 79e624e6a8770a946afb866fd94b394b, type: 3}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[7]'
+      value: 
+      objectReference: {fileID: 1604908963751126680, guid: e5d7b87d422ee0f478ee09eb32e24f4e, type: 3}
+    - target: {fileID: 1996399728832333390, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[8]'
+      value: 
+      objectReference: {fileID: 7993119983977949264, guid: 9eb847ab97b24024588682c8601254cf, type: 3}
     - target: {fileID: 2943889236960280255, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
       propertyPath: m_LocalPosition.x
       value: 740.25
@@ -816,6 +860,10 @@ PrefabInstance:
     - target: {fileID: 6035261787119064488, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
       propertyPath: m_Name
       value: MapGenerator
+      objectReference: {fileID: 0}
+    - target: {fileID: 7628100758444588600, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8280673837116703905, guid: 4d56bfd414dd4954cb07d83ecedc0828, type: 3}
       propertyPath: m_Enabled

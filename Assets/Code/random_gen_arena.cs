@@ -3,7 +3,7 @@ using Photon.Pun;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 
-public class MapGenerator : MonoBehaviour
+public class random_gen_arena : MonoBehaviour
 {
     [Tooltip("The list of all possible obstacle prefabs.")]
     public List<GameObject> obstaclePrefabs;
@@ -28,7 +28,7 @@ public class MapGenerator : MonoBehaviour
 
     private void Start()
     {
-        // Only the Master Client generates and synchronizes the map
+        //Only the Master Client generates and synchronizes the map
         if (PhotonNetwork.IsMasterClient)
         {
             GenerateMap();

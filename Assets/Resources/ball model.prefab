@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: -9221353012711967837}
   - component: {fileID: -1483680859166238178}
   - component: {fileID: 599710577079583426}
+  - component: {fileID: -7374157260510269656}
   m_Layer: 0
   m_Name: ball model
   m_TagString: obstacle
@@ -271,6 +272,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: -1483680859166238178}
+  - {fileID: -7374157260510269656}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -305,3 +307,19 @@ MonoBehaviour:
   randomizeColor: 1
   randomizeMaterial: 1
   materialOptions: []
+--- !u!114 &-7374157260510269656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2739928479667020623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
