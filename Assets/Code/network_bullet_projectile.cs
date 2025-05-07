@@ -8,7 +8,7 @@ public class network_bullet_projectile : MonoBehaviourPunCallbacks
     [Header("Bullet Settings")]
     [SerializeField] private float speed = 20f;           // Speed of the bullet
     [SerializeField] private float lifetime = 3f;        // Lifetime before destruction
-    [SerializeField] private int damage = 20;            // Damage dealt to players
+    [SerializeField] private int damage = 10;            // Damage dealt to players
     [SerializeField] private GameObject hitEffectPrefab; // Effect when the bullet hits something
 
     private Rigidbody rb;
@@ -44,59 +44,43 @@ public class network_bullet_projectile : MonoBehaviourPunCallbacks
 
         if (photonView.IsMine)
         {
-            // Check if the collided object has the player script
+            // Player Damage
             ArenaShooter_PlayerControls player = other.GetComponent<ArenaShooter_PlayerControls>();
+            if (player == null) player = other.GetComponentInParent<ArenaShooter_PlayerControls>();
+            if (player != null) player.ApplyDamage(damage);
 
-            if (player != null)
-            {
-                // Apply damage to the player
-                player.ApplyDamage(damage);
-            }
+            // Gorilla Damage
+            GorillaAI gorilla = other.GetComponent<GorillaAI>();
+            if (gorilla == null) gorilla = other.GetComponentInParent<GorillaAI>();
+            if (gorilla != null) gorilla.ApplyDamage(damage);
 
             // Spawn a hit effect (local only, not networked)
-            if (hitEffectPrefab != null)
-            {
-                PhotonNetwork.Instantiate("Hit_03", transform.position, Quaternion.identity);
-            }
+            if (hitEffectPrefab != null) PhotonNetwork.Instantiate("Hit_03", transform.position, Quaternion.identity);
 
             // Destroy the bullet across the network
             PhotonNetwork.Destroy(gameObject);
-
-            Debug.Log($"Bullet hit: {other.name}");
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log($"Collision Bullet hit: {collision.gameObject.name}");
+        Debug.Log($"Collision Bullet hit: {collision.gameObject.name}");
 
 
         if (photonView.IsMine)
         {
-            // Check if the collided object has the player script
-            ArenaShooter_PlayerControls player = collision.gameObject.GetComponentInParent<ArenaShooter_PlayerControls>();
+            // Player Damage
+            ArenaShooter_PlayerControls player = collision.gameObject.GetComponent<ArenaShooter_PlayerControls>();
+            if (player == null) player = collision.gameObject.GetComponentInParent<ArenaShooter_PlayerControls>();
+            if (player != null) player.ApplyDamage(damage);
 
-            if (player != null)
-            {
-                // Apply damage to the player
-                player.ApplyDamage(damage);
+            // Player Damage
+            GorillaAI gorilla = collision.gameObject.GetComponent<GorillaAI>();
+            if (gorilla == null) gorilla = collision.gameObject.GetComponentInParent<GorillaAI>();
+            if (gorilla != null) gorilla.ApplyDamage(damage);
 
-                if (player.currentHealth > 0)
-                {
-                    Debug.Log($"{collision.transform.parent.root.gameObject.name} took {damage} damage.");
-                }
-                else
-                {
-                    Debug.Log($"{transform.parent.root.gameObject.name} has killed {collision.transform.parent.root.gameObject.name}!");
-                }
-
-            }
-
-            // Spawn a hit effect (local only, not networked)
-            if (hitEffectPrefab != null)
-            {
-                PhotonNetwork.Instantiate("Hit_03", transform.position, Quaternion.identity);
-            }
+            // Spawn a hit effect
+            if (hitEffectPrefab != null) PhotonNetwork.Instantiate("Hit_03", transform.position, Quaternion.identity);
 
             // Destroy the bullet across the network
             PhotonNetwork.Destroy(gameObject);

@@ -15,6 +15,7 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
     [Header("Health Settings")]
     [SerializeField] public int maxHealth = 100;
     public int currentHealth;
+    public bool horizontalView = false; 
 
     [Header("Auto-Configured Components")]
     [SerializeField] private GameObject _mainCamera;
@@ -166,7 +167,7 @@ public class ArenaShooter_PlayerControls : MonoBehaviourPunCallbacks
 
             // Adjust rotation for non-aiming state
             Vector2 lookInputValue = lookInput.action.ReadValue<Vector2>();
-            lookInputValue.y = 0; // Side-to-side rotation only
+            if (horizontalView) ; lookInputValue.y = 0; 
             float rotationAmount = lookInputValue.x * Normal_Sensitivity * Time.deltaTime;
             transform.Rotate(Vector3.up, rotationAmount);
 
